@@ -48,23 +48,41 @@ public class AuthenticationService {
         .build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-            request.getEmail(),
-            request.getPassword()
-        )
-    );
-    var user = repository.findByEmail(request.getEmail())
-        .orElseThrow();
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    revokeAllUserTokens(user);
-    saveUserToken(user, jwtToken);
-    return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
-        .build();
-  }
+//  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+//    authenticationManager.authenticate(
+//        new UsernamePasswordAuthenticationToken(
+//            request.getEmail(),
+//            request.getPassword()
+//        )
+//    );
+//    var user = repository.findByEmail(request.getEmail())
+//        .orElseThrow();
+//    var jwtToken = jwtService.generateToken(user);
+//    var refreshToken = jwtService.generateRefreshToken(user);
+//    revokeAllUserTokens(user);
+//    saveUserToken(user, jwtToken);
+//    return AuthenticationResponse.builder()
+//        .accessToken(jwtToken)
+//        .build();
+//  }
+public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(
+                  request.getEmail(),
+                  request.getPassword()
+          )
+  );
+  var user = repository.findByEmail(request.getEmail())
+          .orElseThrow();
+  var jwtToken = jwtService.generateToken(user);
+  var refreshToken = jwtService.generateRefreshToken(user);
+  revokeAllUserTokens(user);
+  saveUserToken(user, jwtToken);
+  return AuthenticationResponse.builder()
+          .accessToken(jwtToken)
+          .role(user.getRole().toString())  // Set the role in the response
+          .build();
+}
 
   private void saveUserToken(User user, String jwtToken) {
     var token = Token.builder()
