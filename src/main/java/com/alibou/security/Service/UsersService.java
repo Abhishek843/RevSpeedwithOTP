@@ -9,6 +9,8 @@ import com.alibou.security.util.OtpUtil;
 import jakarta.mail.MessagingException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,15 +42,14 @@ public class UsersService {
     }
 
     public String verifyAccount(String email, String otp) {
-        Users user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with this email: " + email));
-        System.out.println(user);
+        List<Users> usersWithOtp = userRepository.findByOtp(otp);
 
-        if (user.getOtp().equals(otp)) {
-
-            return "OTP verified you can login";
+        if (!usersWithOtp.isEmpty()) {
+            // You can further refine the logic if needed (e.g., check the OTP generation time)
+            return "OTP verified, you can login";
         }
-        return "Please regenerate otp and try again";
+
+        return "Invalid OTP, please regenerate OTP and try again";
     }
 
     public String regenerateOtp(String email) {

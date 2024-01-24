@@ -4,6 +4,7 @@ import com.alibou.security.Service.UsersService;
 import com.alibou.security.dto.LoginDto;
 import com.alibou.security.dto.RegisterDto;
 import com.alibou.security.help.Email;
+import com.alibou.security.help.VerificationRequest;
 import com.alibou.security.help.EmailServices;
 import com.alibou.security.user.ChangePasswordRequest;
 import com.alibou.security.user.UserService;
@@ -42,8 +43,9 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
     @PutMapping("/verify-account")
-    public ResponseEntity<String> verifyAccount(@RequestParam String email,
-                                                @RequestParam String otp) {
+    public ResponseEntity<String> verifyAccount(@RequestBody VerificationRequest verificationRequest) {
+        String email=verificationRequest.getEmail();
+        String otp=verificationRequest.getOtp();
         return new ResponseEntity<>(usersService.verifyAccount(email, otp), HttpStatus.OK);
     }
     @PutMapping("/regenerate-otp")
