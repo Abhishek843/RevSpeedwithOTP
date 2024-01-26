@@ -1,5 +1,6 @@
 package com.alibou.security.auth;
 
+import com.alibou.security.Service.PaymentService;
 import com.alibou.security.Service.UsersService;
 import com.alibou.security.dto.LoginDto;
 import com.alibou.security.dto.RegisterDto;
@@ -7,6 +8,7 @@ import com.alibou.security.help.Email;
 import com.alibou.security.help.VerificationRequest;
 import com.alibou.security.help.EmailServices;
 import com.alibou.security.user.ChangePasswordRequest;
+import com.alibou.security.user.Payments;
 import com.alibou.security.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +32,8 @@ public class AuthenticationController {
    private UserService uservice;
    @Autowired
    private UsersService usersService;
+   @Autowired
+   private PaymentService paymentService;
     @PostMapping("/newregister")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         return new ResponseEntity<>(usersService.register(registerDto), HttpStatus.OK);
@@ -93,6 +97,11 @@ public class AuthenticationController {
   ) throws IOException {
     service.refreshToken(request, response);
   }
+  @PostMapping("/savepayments")
+    public Payments savePay(@RequestBody Payments payments){
+      return paymentService.savePayment(payments);
+  }
+
 
 
 }
