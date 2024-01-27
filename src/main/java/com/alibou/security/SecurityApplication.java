@@ -22,9 +22,10 @@ public class SecurityApplication {
 //	EmailService emailService;
 
 	public static void main(String[] args) {
+
+
 		SpringApplication.run(SecurityApplication.class, args);
 	}
-
 //	@EventListener(ApplicationReadyEvent.class)
 //	public void sendMail() {
 //		emailService.sendEmail("saurabh93289@gmail.com", "Test Email", "This is a test email body...");
