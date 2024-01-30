@@ -29,15 +29,21 @@ public class BusinessPlans {
     @Column(name = "plan_speed")
     private String planSpeed;
 
+    @Column(name = "plan_data")
+    private String planData;
+
     @Column(name = "plan_price")
     private double planPrice;
 
-    @Column(name = "plan_type")
-    private String planType;
+    @Column(name = "ott_benefit_1")
+    private String ott_benefit_1;
 
-    @OneToMany(mappedBy = "businessPlan")
-    private List<User> UserList;
+    @Column(name = "ott_benefit_2")
+    private String ott_benefit_2;
 
-    // Other fields and methods
+//    @OneToMany(mappedBy = "business_plan_id")
+//    private List<User> userList;
+
+
 
 }

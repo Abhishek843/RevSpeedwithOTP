@@ -3,17 +3,15 @@ package com.alibou.security.user;
 import com.alibou.security.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,11 +38,11 @@ public class User implements UserDetails {
 
   @ManyToOne
   @JoinColumn(name = "home_plan_id")
-  private HomePlans homePlan;
+  private HomePlans home_plan_id;
 
   @ManyToOne
   @JoinColumn(name = "business_plan_id")
-  private BusinessPlans businessPlan;
+  private BusinessPlans business_plan_id;
 
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -53,7 +51,7 @@ public class User implements UserDetails {
 
   @ManyToOne
   @JoinColumn(name = "no_plan_id")
-  private NoPlan noPlan;
+  private NoPlan no_plan_id;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

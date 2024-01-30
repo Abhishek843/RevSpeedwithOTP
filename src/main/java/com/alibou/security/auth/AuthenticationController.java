@@ -1,22 +1,32 @@
 package com.alibou.security.auth;
 
+import com.alibou.security.Service.BusinessPlansService;
+import com.alibou.security.Service.HomePlansService;
+//import com.alibou.security.Service.UService;
+import com.alibou.security.Service.UService;
 import com.alibou.security.Service.UsersService;
 import com.alibou.security.dto.LoginDto;
 import com.alibou.security.dto.RegisterDto;
 import com.alibou.security.help.Email;
 import com.alibou.security.help.VerificationRequest;
 import com.alibou.security.help.EmailServices;
-import com.alibou.security.user.ChangePasswordRequest;
-import com.alibou.security.user.UserService;
+import com.alibou.security.repository.BusinessPlansRepository;
+import com.alibou.security.repository.HomePlansRepository;
+import com.alibou.security.repository.URepository;
+import com.alibou.security.user.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,7 +37,7 @@ public class AuthenticationController {
    @Autowired
     private EmailServices emailService;
    @Autowired
-   private UserService uservice;
+    UserService uservice;
    @Autowired
    private UsersService usersService;
     @PostMapping("/newregister")
@@ -71,7 +81,8 @@ public class AuthenticationController {
         }
     }
 
-  private final AuthenticationService service;
+    @Autowired
+    private final AuthenticationService service;
 
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
@@ -93,6 +104,61 @@ public class AuthenticationController {
   ) throws IOException {
     service.refreshToken(request, response);
   }
+
+  @Autowired
+  private HomePlansService homePlansService;
+
+  @Autowired
+  private BusinessPlansRepository businessPlansRepository;
+
+  @Autowired
+  private BusinessPlansService businessPlansService;
+
+  @Autowired
+  private HomePlansRepository homePlansRepository;
+
+  @Autowired
+  private UService uService;
+
+
+
+    @GetMapping("/business-plans")
+
+    public List<BusinessPlans> getBusinessPlans() {
+        return businessPlansService.getBusinessPlans();
+    }
+
+    @GetMapping("/home-plans")
+
+    public List<HomePlans> getHomePlans() {
+        return homePlansService.getHomePlans();
+    }
+
+//    @Autowired
+//    private UService uService;
+
+
+
+
+
+    @GetMapping("/udetails/{email}")
+    public ResponseEntity<User> getUseredetailsById(@PathVariable(value = "email") String email, @Valid User userdetails)throws Exception
+    {
+        final User udetails = uservice.getUserbyId(email);
+        return  ResponseEntity.ok(udetails);
+    }
+
+    @PutMapping("/upCustomer")
+    public ResponseEntity<User> setCustomer(@RequestBody UpdateRequest userdetails) throws Exception
+    {
+        User updateuser=uservice.updateUser(userdetails);
+        return ResponseEntity.ok().body(updateuser);
+
+    }
+
+
+
+
 
 
 }
