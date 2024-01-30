@@ -1,3 +1,4 @@
+
 package com.alibou.security.auth;
 
 import com.alibou.security.user.Role;
@@ -10,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class UpdateRequest {
 
-  private String firstname;
-  private String lastname;
-  private String email;
-  private String password;
-  private Role role;
-  private String address;
-  private String phone;
+
+    private String email;
+    private String firstname;
+    private String lastname;
+    private String phone;
+    private String address;
+
 }

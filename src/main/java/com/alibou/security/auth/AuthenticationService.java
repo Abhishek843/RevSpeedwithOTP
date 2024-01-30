@@ -4,21 +4,19 @@ import com.alibou.security.config.JwtService;
 import com.alibou.security.token.Token;
 import com.alibou.security.token.TokenRepository;
 import com.alibou.security.token.TokenType;
-import com.alibou.security.user.Role;
 import com.alibou.security.user.User;
 import com.alibou.security.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 
@@ -36,7 +34,9 @@ public class AuthenticationService {
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
+            .address(request.getAddress())
+            .phone(request.getPhone())
+            .password(passwordEncoder.encode(request.getPassword()))
         .role(request.getRole())
         .build();
     var savedUser = repository.save(user);
@@ -83,6 +83,19 @@ public AuthenticationResponse authenticate(AuthenticationRequest request) {
           .role(user.getRole().toString())  // Set the role in the response
           .build();
 }
+  public void updateUserDetails(UpdateRequest userDetailsRequest ) throws ChangeSetPersister.NotFoundException {
+    System.out.println(userDetailsRequest.getEmail());
+
+    User user = repository.findByEmaill(userDetailsRequest.getEmail())
+            ;
+
+    System.out.println(user);
+    user.setAddress((userDetailsRequest.getAddress()));
+
+    // Save the new password
+    repository.save(user);
+
+  }
 
   private void saveUserToken(User user, String jwtToken) {
     var token = Token.builder()
@@ -105,6 +118,9 @@ public AuthenticationResponse authenticate(AuthenticationRequest request) {
     });
     tokenRepository.saveAll(validUserTokens);
   }
+
+
+
 
   public void refreshToken(
           HttpServletRequest request,
@@ -133,4 +149,6 @@ public AuthenticationResponse authenticate(AuthenticationRequest request) {
       }
     }
   }
+
+
 }

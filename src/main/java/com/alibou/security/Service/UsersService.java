@@ -46,7 +46,7 @@ public class UsersService {
 
         if (!usersWithOtp.isEmpty()) {
             // You can further refine the logic if needed (e.g., check the OTP generation time)
-            return "OTP verified, you can login";
+            return otp;
         }
 
         return "Invalid OTP, please regenerate OTP and try again";
