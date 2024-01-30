@@ -21,27 +21,31 @@ public class HomePlans {
     private Long id;
 
     @Column(name = "billing_cycle")
-    private String billing_cycle;
+    private String billingCycle;
 
     @Column(name = "plan_name")
-    private String plan_name;
+    private String planName;
 
     @Column(name = "plan_speed")
-    private String plan_speed;
-
-    @Column(name = "plan_data")
-    private String plan_data;
+    private String planSpeed;
 
     @Column(name = "plan_price")
-    private double plan_price;
+    private double planPrice;
+
+    @Column(name = "plan_type")
+    private String planType;
+
+    @Column(name = "plan_data")
+    private String planData;
 
     @Column(name = "ott_benefit_1")
     private String ott_benefit_1;
 
     @Column(name = "ott_benefit_2")
     private String ott_benefit_2;
-//
-//    @OneToMany(mappedBy = "home_plan_id")
+
+//    @ManyToOne
+//            @JoinColumn(name = "home_plan-id")
 //    private List<User> UserList;
 
     // Other fields and methods

@@ -44,15 +44,20 @@ public class UserService {
         return repository.save(user);
     }
 
-    public User updateUser(UpdateRequest userdetails) throws Exception
+    public User updateUser(User userdetails) throws Exception
     {
 //        System.out.println(userdetails +""+uid);
+        User user=repository.findByEmaill(userdetails.getEmail());
 
-        User user = repository.findByEmaill(userdetails.getEmail());
-
-        userdetails.setHome_plan_id(userdetails.getHome_plan_id());
-        userdetails.setBusiness_plan_id(userdetails.getBusiness_plan_id());
-        userdetails.setNo_plan_id(userdetails.getNo_plan_id());
+        System.out.println(user);
+        user.setEmail(userdetails.getEmail());
+        user.setAddress(userdetails.getAddress());
+        user.setFirstname(userdetails.getFirstname());
+        user.setLastname(userdetails.getLastname());
+        user.setPhone(userdetails.getPhone());
+        user.setBusinessPlans(userdetails.getBusinessPlans());
+        user.setHomePlans(userdetails.getHomePlans());
+        user.setNoPlan(userdetails.getNoPlan());
         return repository.save(user);
     }
 

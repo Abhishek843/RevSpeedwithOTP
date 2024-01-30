@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+
 @Getter
 @Setter
 @Builder
@@ -27,7 +28,11 @@ public class User implements UserDetails {
   private String email;
   private String password;
   private String phone;
-  private  String address;
+  private String address;
+
+
+
+
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -38,20 +43,23 @@ public class User implements UserDetails {
 
   @ManyToOne
   @JoinColumn(name = "home_plan_id")
-  private HomePlans home_plan_id;
+  private HomePlans homePlans;
 
   @ManyToOne
   @JoinColumn(name = "business_plan_id")
-  private BusinessPlans business_plan_id;
+  private BusinessPlans businessPlans;
 
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "user")
   private List<Payments> payments;
 
 
   @ManyToOne
   @JoinColumn(name = "no_plan_id")
-  private NoPlan no_plan_id;
+  private NoPlan noPlan;
+
+
+
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,4 +95,5 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }

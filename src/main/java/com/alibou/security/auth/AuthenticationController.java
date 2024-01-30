@@ -140,7 +140,6 @@ public class AuthenticationController {
 
 
 
-
     @GetMapping("/udetails/{email}")
     public ResponseEntity<User> getUseredetailsById(@PathVariable(value = "email") String email, @Valid User userdetails)throws Exception
     {
@@ -149,7 +148,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/upCustomer")
-    public ResponseEntity<User> setCustomer(@RequestBody UpdateRequest userdetails) throws Exception
+    public ResponseEntity<User> setCustomer(@RequestBody User userdetails) throws Exception
     {
         User updateuser=uservice.updateUser(userdetails);
         return ResponseEntity.ok().body(updateuser);

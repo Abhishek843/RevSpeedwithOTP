@@ -1,11 +1,15 @@
 package com.alibou.security.user;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,8 +20,11 @@ public class NoPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @OneToOne(mappedBy = "no_plan_id")
-//    private User user;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "no_plan_id")
+
+    private List<User> userList;
 
     @Column(name = "plan_type")
     private String planType;
