@@ -1,17 +1,19 @@
 package com.alibou.security.auth;
 
+import com.alibou.security.Service.BusinessPlansService;
+import com.alibou.security.Service.HomePlansService;
 import com.alibou.security.Service.PaymentService;
 import com.alibou.security.Service.UsersService;
 import com.alibou.security.dto.LoginDto;
 import com.alibou.security.dto.RegisterDto;
+import com.alibou.security.exception.ResourceNotFoundException;
 import com.alibou.security.help.Email;
 import com.alibou.security.help.VerificationRequest;
 import com.alibou.security.help.EmailServices;
-import com.alibou.security.user.ChangePasswordRequest;
-import com.alibou.security.user.Payments;
-import com.alibou.security.user.UserService;
+import com.alibou.security.user.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -102,6 +106,92 @@ public class AuthenticationController {
       return paymentService.savePayment(payments);
   }
 
+    @Autowired
+    private HomePlansService homePlansService;
+
+    @GetMapping("/home-plans")
+
+    public List<HomePlans> getHomePlans() {
+        return homePlansService.getHomePlans();
+    }
+
+    @GetMapping("/home-plans/{id}")
+    public ResponseEntity<HomePlans> getPlanById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        HomePlans homePlans = homePlansService.getPlanById(id);
+        return ResponseEntity.ok().body(homePlans);
+    }
+    @PostMapping("/home-plans")
+    public ResponseEntity<HomePlans> savePlan(@RequestBody HomePlans broadbandPlans){
+
+        HomePlans savedPlan =  homePlansService.savePlan(broadbandPlans);
+        return new ResponseEntity<>(savedPlan, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/home-plans/{id}")
+    public ResponseEntity<HomePlans> updateBroadbandPlan(@PathVariable(value = "id") Long id,
+                                                              @Valid @RequestBody HomePlans broadbandPlans) throws ResourceNotFoundException {
+        HomePlans updatedPlan = homePlansService.updateHomePlans(id, broadbandPlans);
+        return ResponseEntity.ok(updatedPlan);
+    }
 
 
+    @DeleteMapping("/home-plans/{id}")
+    public Map<String,Boolean> deleteBroadbandPlanWithId(@PathVariable(value = "id") Long id) throws ResourceNotFoundException{
+        return homePlansService.deletePlan(id);
+
+    }
+
+    @Autowired
+    private BusinessPlansService businessPlansService;
+
+    @GetMapping("/business-plans")
+
+    public List<BusinessPlans> getBusinessPlans() {
+        return businessPlansService.getBusinessPlans();
+    }
+
+    @GetMapping("/business-plans/{id}")
+    public ResponseEntity<BusinessPlans> getBusinessPlanById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        BusinessPlans businessPlans = businessPlansService.getPlanById(id);
+        return ResponseEntity.ok().body(businessPlans);
+    }
+
+    @PostMapping("/business-plans")
+    public ResponseEntity<BusinessPlans> savePlan(@RequestBody BusinessPlans businessPlans){
+        BusinessPlans savedPlan = businessPlansService.savePlan(businessPlans);
+        return new ResponseEntity<>(savedPlan, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/business-plans/{id}")
+    public ResponseEntity<BusinessPlans> updateBusinessPlan(@PathVariable(value = "id") Long id,
+                                                            @Valid @RequestBody BusinessPlans businessPlans) throws ResourceNotFoundException {
+        BusinessPlans updatedPlan = businessPlansService.updateBusinessPlans(id, businessPlans);
+        return ResponseEntity.ok(updatedPlan);
+    }
+
+
+    @DeleteMapping("/business-plans/{id}")
+    public Map<String,Boolean> deleteBusinessPlanWithId(@PathVariable(value = "id") Long id) throws ResourceNotFoundException{
+        return businessPlansService.deletePlan(id);
+
+    }
+
+    @Autowired
+    private UserService userService;
+    @GetMapping("/udetails")
+    public List<User>  getUseredetailsById() throws  Exception
+    {
+         List<User> udetails= userService.findAllUsers();
+        return udetails;
+
+    }
+
+    @GetMapping("/udetails/{email}")
+    public User  getUseredetailsById(@PathVariable(value = "email") String email,
+                                                        User userdetails) throws  Exception
+    {
+         User udetails= uservice.getUserbyId(email);
+        return udetails;
+
+    }
 }

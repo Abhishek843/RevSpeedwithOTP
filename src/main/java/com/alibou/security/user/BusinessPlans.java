@@ -32,12 +32,16 @@ public class BusinessPlans {
     @Column(name = "plan_price")
     private double planPrice;
 
-    @Column(name = "plan_type")
-    private String planType;
+    @Column(name = "plan_data")
+    private String planData;
 
-    @OneToMany(mappedBy = "businessPlan")
-    private List<User> UserList;
+    @Column(name = "ott_benefit_1")
+    private String ott_benefit_1;
 
-    // Other fields and methods
+    @Column(name = "ott_benefit_2")
+    private String ott_benefit_2;
+
+
+
 
 }
